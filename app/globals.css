@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "TMS Shekel";
+  src: url("/fonts/shekel.ttf") format("truetype");
+  unicode-range: U+20AA;
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: var(--font-manrope), "Segoe UI", Arial, sans-serif;
+  --color-ink: #0c1730;
+  --color-muted: #31445c;
+  --color-paper: #f4f7fb;
+  --color-line: #e2e8f2;
+  --color-navy-950: #05070d;
+  --color-navy-900: #071226;
+  --color-navy-800: #10203c;
+  --color-sea: #0d6b58;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), "Segoe UI", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #1563e8;
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid #041018;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px #67e8f9;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 80;
+  border-radius: 999px;
+  background: #fff;
+  color: #05070d;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@keyframes tms-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float-slow {
+  animation: tms-float 7s ease-in-out infinite;
+}
+
+@keyframes tms-drawer {
+  from {
+    transform: translateX(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.drawer-in {
+  animation: tms-drawer 0.22s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .float-slow,
+  .drawer-in {
+    animation: none;
+  }
+}
+
+html[data-a11y-motion="reduce"] {
+  scroll-behavior: auto;
+}
+
+html[data-a11y-motion="reduce"] *,
+html[data-a11y-motion="reduce"] *::before,
+html[data-a11y-motion="reduce"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-a11y-readable="on"] body {
+  font-family: Arial, "Segoe UI", sans-serif !important;
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+html[data-a11y-links="on"] a:not([data-ui="button"]) {
+  background-color: #ffe14a !important;
+  color: #000 !important;
+  outline: 2px solid #000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html[data-a11y-contrast="high"] body,
+html[data-a11y-contrast="high"] header,
+html[data-a11y-contrast="high"] footer,
+html[data-a11y-contrast="high"] main,
+html[data-a11y-contrast="high"] section,
+html[data-a11y-contrast="high"] article,
+html[data-a11y-contrast="high"] nav,
+html[data-a11y-contrast="high"] aside,
+html[data-a11y-contrast="high"] div,
+html[data-a11y-contrast="high"] dialog,
+html[data-a11y-contrast="high"] p,
+html[data-a11y-contrast="high"] li,
+html[data-a11y-contrast="high"] span,
+html[data-a11y-contrast="high"] h1,
+html[data-a11y-contrast="high"] h2,
+html[data-a11y-contrast="high"] h3,
+html[data-a11y-contrast="high"] h4,
+html[data-a11y-contrast="high"] a,
+html[data-a11y-contrast="high"] button {
+  background-color: #fff !important;
+  background-image: none !important;
+  color: #000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html[data-a11y-contrast="high"] a,
+html[data-a11y-contrast="high"] button {
+  border: 2px solid #000 !important;
+  text-decoration: underline;
+}
+
+html[data-a11y-contrast="high"] :focus-visible {
+  outline: 3px solid #000 !important;
+  box-shadow: none !important;
+}
