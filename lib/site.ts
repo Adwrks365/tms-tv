@@ -26,7 +26,7 @@ export const nav = [
   { href: "/#how", label: "Как подключиться" },
   { href: "/#pricing", label: "Тарифы" },
   { href: "/#faq", label: "Вопросы и ответы" },
-  { href: "/#contacts", label: "Контакты" },
+  { href: "/#contact-form", label: "Оставить заявку" },
 ] as const;
 
 export const highlights = [

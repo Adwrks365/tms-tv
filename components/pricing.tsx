@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { SectionHeading, WhatsAppButton } from "@/components/ui";
+import { ScrollToFormButton } from "@/components/scroll-to-form-button";
+import { SectionHeading } from "@/components/ui";
 import { plans, wa, whatsappHref } from "@/lib/site";
 
 export function Pricing() {
@@ -42,13 +43,13 @@ export function Pricing() {
                 </p>
               ) : null}
               <div className="flex-1" />
-              <WhatsAppButton
-                message={plan.message}
+              <ScrollToFormButton
+                plan={plan.id}
                 variant={featured ? "whatsapp" : "primary"}
                 className="mt-6 w-full"
               >
                 {plan.cta}
-              </WhatsAppButton>
+              </ScrollToFormButton>
             </article>
           );
         })}

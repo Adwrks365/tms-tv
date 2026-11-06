@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import Image from "next/image";
+import { ScrollToFormButton } from "@/components/scroll-to-form-button";
 import { ButtonLink, WhatsAppButton } from "@/components/ui";
 import { highlights, wa } from "@/lib/site";
 
@@ -35,6 +36,7 @@ export function Hero() {
             <ButtonLink href="/#pricing" variant="ghost">
               Посмотреть тарифы
             </ButtonLink>
+            <ScrollToFormButton variant="ghost">Оставить заявку</ScrollToFormButton>
           </div>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2">
             {highlights.map((item) => (
