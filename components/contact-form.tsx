@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useId, useState } from "react";
 import { leadPlanOptions, LEAD_PLAN_STORAGE_KEY, type LeadPlanValue } from "@/lib/leads";
@@ -47,13 +48,13 @@ export function ContactForm() {
     setWhatsappUrl(null);
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           phone,
-          plan,
+          package: plan,
           pageUrl: window.location.href,
           utm: readUtmParams(),
           company,
@@ -170,9 +171,16 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === "submitting" || status === "success"}
-          className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[linear-gradient(100deg,#0b4ec8_0%,#1a74f5_58%,#1493e6_100%)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_-16px_rgba(20,110,230,0.95)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,#0b4ec8_0%,#1a74f5_58%,#1493e6_100%)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_-16px_rgba(20,110,230,0.95)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {status === "submitting" ? "Отправляем…" : "Отправить заявку"}
+          {status === "submitting" ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              Отправляем…
+            </>
+          ) : (
+            "Отправить заявку"
+          )}
         </button>
 
         <p className="text-xs leading-relaxed text-slate-300">
