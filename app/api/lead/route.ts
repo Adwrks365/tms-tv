@@ -17,9 +17,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return Response.json({
-    success: true,
-    whatsappUrl: "whatsappUrl" in result ? result.whatsappUrl : undefined,
-    phoneTel: "phoneTel" in result ? result.phoneTel : undefined,
-  });
+  return Response.json({ success: true });
 }

@@ -1,9 +1,7 @@
 import { Resend } from "resend";
-import { buildLeadWhatsAppMessage } from "@/lib/leads";
 import { buildLeadEmailHtml } from "@/lib/lead-email";
 import { parseLeadPackage } from "@/lib/lead-plan-label";
 import { isValidIsraeliPhone, normalizeIsraeliPhone } from "@/lib/phone";
-import { site, whatsappHref } from "@/lib/site";
 
 export type LeadPayload = {
   name?: string;
@@ -95,16 +93,8 @@ export async function submitLead(_request: Request, body: LeadPayload) {
     };
   }
 
-  const whatsappMessage = buildLeadWhatsAppMessage(
-    name,
-    phoneRaw,
-    plan as "" | "month" | "half" | "year",
-  );
-
   return {
     ok: true as const,
     success: true as const,
-    whatsappUrl: whatsappHref(whatsappMessage),
-    phoneTel: site.phoneTel,
   };
 }

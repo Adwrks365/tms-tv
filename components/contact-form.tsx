@@ -1,24 +1,12 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useId, useState } from "react";
 import { leadPlanOptions, LEAD_PLAN_STORAGE_KEY, type LeadPlanValue } from "@/lib/leads";
 import { site, whatsappHref, wa } from "@/lib/site";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
-
-function readUtmParams() {
-  if (typeof window === "undefined") return {};
-  const params = new URLSearchParams(window.location.search);
-  return {
-    source: params.get("utm_source") ?? undefined,
-    medium: params.get("utm_medium") ?? undefined,
-    campaign: params.get("utm_campaign") ?? undefined,
-    term: params.get("utm_term") ?? undefined,
-    content: params.get("utm_content") ?? undefined,
-  };
-}
 
 export function ContactForm() {
   const formId = useId();
@@ -37,37 +25,37 @@ export function ContactForm() {
   const [company, setCompany] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
-  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "submitting") return;
 
+    const trimmedName = name.trim();
+    const trimmedPhone = phone.trim();
+
     setStatus("submitting");
-    setStatusMessage("Отправляем…");
-    setWhatsappUrl(null);
+    setStatusMessage("");
 
     try {
       const response = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          phone,
+          name: trimmedName,
+          phone: trimmedPhone,
           package: plan,
-          pageUrl: window.location.href,
-          utm: readUtmParams(),
           company,
         }),
       });
 
-      const data = (await response.json()) as {
-        success?: boolean;
-        message?: string;
-        whatsappUrl?: string;
-      };
+      let data: { success?: boolean; message?: string; whatsappUrl?: string } = {};
+      try {
+        data = (await response.json()) as typeof data;
+      } catch {
+        data = {};
+      }
 
-      if (!response.ok) {
+      if (!response.ok || data.success !== true) {
         setStatus("error");
         setStatusMessage(
           data.message ??
@@ -77,11 +65,7 @@ export function ContactForm() {
       }
 
       setStatus("success");
-      setStatusMessage("Спасибо! Ваша заявка отправлена. Мы свяжемся с вами по указанному номеру.");
-      if (data.whatsappUrl) {
-        setWhatsappUrl(data.whatsappUrl);
-        window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
-      }
+      setStatusMessage("Спасибо! Заявка принята. Мы свяжемся с вами по указанному номеру.");
       setName("");
       setPhone("");
       setPlan("");
@@ -97,7 +81,13 @@ export function ContactForm() {
   return (
     <div className="relative overflow-hidden rounded-[1.75rem] border border-cyan-300/25 bg-[linear-gradient(160deg,#0c1730_0%,#07101f_55%,#0a1628_100%)] p-6 shadow-[0_0_0_1px_rgba(103,232,249,0.12),0_28px_70px_-32px_rgba(34,211,238,0.45)] sm:p-8">
       <div className="pointer-events-none absolute -right-8 top-0 h-40 w-40 rounded-full bg-cyan-400/15 blur-3xl" />
-      <form onSubmit={onSubmit} className="relative space-y-4" noValidate aria-describedby={statusMessage ? statusId : undefined}>
+      <form
+        onSubmit={onSubmit}
+        className="relative space-y-4"
+        noValidate
+        aria-busy={status === "submitting"}
+        aria-describedby={statusMessage ? statusId : undefined}
+      >
         <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
           <label htmlFor={`${formId}-company`}>Компания</label>
           <input
@@ -154,7 +144,7 @@ export function ContactForm() {
           </label>
           <select
             id={`${formId}-plan`}
-            name="plan"
+            name="package"
             value={plan}
             onChange={(event) => setPlan(event.target.value as LeadPlanValue)}
             disabled={status === "submitting" || status === "success"}
@@ -191,47 +181,39 @@ export function ContactForm() {
           и на связь по вашему обращению.
         </p>
 
-        {statusMessage ? (
+        {status === "success" ? (
           <div
             id={statusId}
-            role={status === "success" ? "status" : "alert"}
+            role="status"
             aria-live="polite"
-            className={`rounded-2xl border px-4 py-3 text-sm leading-relaxed ${
-              status === "success"
-                ? "border-emerald-300/40 bg-emerald-400/10 text-emerald-100"
-                : status === "error"
-                  ? "border-red-300/40 bg-red-400/10 text-red-100"
-                  : "border-white/15 bg-white/5 text-slate-100"
-            }`}
+            className="flex gap-3 rounded-2xl border border-emerald-300/40 bg-emerald-400/10 px-4 py-4 text-sm leading-relaxed text-emerald-50"
+          >
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" aria-hidden />
+            <p className="font-medium">{statusMessage}</p>
+          </div>
+        ) : null}
+
+        {status === "error" && statusMessage ? (
+          <div
+            id={statusId}
+            role="alert"
+            aria-live="polite"
+            className="rounded-2xl border border-red-300/40 bg-red-400/10 px-4 py-3 text-sm leading-relaxed text-red-100"
           >
             {statusMessage}
-            {status === "error" ? (
-              <p className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-                <a href={`tel:${site.phoneTel}`} className="font-semibold underline">
-                  Позвонить {site.phoneDisplay}
-                </a>
-                <a
-                  href={whatsappHref(wa.connect)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold underline"
-                >
-                  Написать в WhatsApp
-                </a>
-              </p>
-            ) : null}
-            {status === "success" && whatsappUrl ? (
-              <p className="mt-3">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold underline"
-                >
-                  Открыть WhatsApp с текстом заявки
-                </a>
-              </p>
-            ) : null}
+            <p className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <a href={`tel:${site.phoneTel}`} className="font-semibold underline">
+                Позвонить {site.phoneDisplay}
+              </a>
+              <a
+                href={whatsappHref(wa.connect)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold underline"
+              >
+                Написать в WhatsApp
+              </a>
+            </p>
           </div>
         ) : null}
       </form>
