@@ -62,7 +62,7 @@ export function ContactForm() {
       });
 
       const data = (await response.json()) as {
-        ok?: boolean;
+        success?: boolean;
         message?: string;
         whatsappUrl?: string;
       };
