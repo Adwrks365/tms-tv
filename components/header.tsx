@@ -78,17 +78,22 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2 sm:flex">
+        <div className="ml-auto hidden shrink-0 items-center gap-2.5 lg:flex">
           <a
             href={`tel:${site.phoneTel}`}
-            className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold text-white transition hover:text-cyan-200"
+            data-ui="button"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-cyan-200/35 bg-white/10 px-4 text-sm font-semibold text-white shadow-[0_8px_24px_-14px_rgba(34,211,238,0.45)] transition hover:border-cyan-200/60 hover:bg-white/15"
           >
-            <Phone className="h-4 w-4" aria-hidden />
+            <Phone className="h-4 w-4 shrink-0 text-cyan-200" aria-hidden />
             {site.phoneDisplay}
           </a>
-          <div className="hidden md:block">
-            <WhatsAppButton message={wa.connect}>Написать в WhatsApp</WhatsAppButton>
-          </div>
+          <WhatsAppButton
+            message={wa.connect}
+            variant="whatsapp"
+            className="shrink-0 whitespace-nowrap px-4"
+          >
+            Написать в WhatsApp
+          </WhatsAppButton>
         </div>
 
         <button

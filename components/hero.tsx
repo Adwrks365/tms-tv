@@ -29,14 +29,16 @@ export function Hero() {
             Более 400 каналов, включая израильские, VOD с новинками кино и архив передач за
             последние 14 дней. Смотрите в качестве Full HD и 4K.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <WhatsAppButton message={wa.connect} variant="whatsapp">
+          <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:flex-nowrap lg:items-center">
+            <WhatsAppButton message={wa.connect} variant="whatsapp" className="lg:shrink-0">
               Подключиться в WhatsApp
             </WhatsAppButton>
-            <ButtonLink href="/#pricing" variant="ghost">
+            <ButtonLink href="/#pricing" variant="ghost" className="lg:shrink-0">
               Посмотреть тарифы
             </ButtonLink>
-            <ScrollToFormButton variant="ghost">Оставить заявку</ScrollToFormButton>
+            <ScrollToFormButton variant="primary" className="lg:shrink-0">
+              Оставить заявку
+            </ScrollToFormButton>
           </div>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2">
             {highlights.map((item) => (

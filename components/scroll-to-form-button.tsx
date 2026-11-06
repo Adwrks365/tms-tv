@@ -19,7 +19,7 @@ export function ScrollToFormButton({
     primary:
       "bg-[linear-gradient(100deg,#0b4ec8_0%,#1a74f5_58%,#1493e6_100%)] text-white shadow-[0_14px_34px_-16px_rgba(20,110,230,0.95)] hover:brightness-110",
     whatsapp:
-      "bg-sea text-white shadow-[0_14px_34px_-16px_rgba(13,107,88,0.9)] hover:bg-[#0a5849]",
+      "bg-[#25D366] text-white shadow-[0_14px_34px_-16px_rgba(37,211,102,0.55)] hover:bg-[#20BD5A]",
     ghost:
       "border border-white/25 bg-white/5 text-white hover:border-white/45 hover:bg-white/10",
     light: "bg-white text-navy-950 hover:bg-cyan-50",
