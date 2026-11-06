@@ -46,6 +46,9 @@ export const metadata: Metadata = {
     description: seoDescription,
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "6PUN3vlbki7OwwyK4DvcO70JYWjKyqvAfRSLvPUzxFQ",
+  },
   icons: {
     icon: [{ url: "/favicon.ico", sizes: "any" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
